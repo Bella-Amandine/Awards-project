@@ -28,6 +28,24 @@ class Project(models.Model):
     project_image = models.ImageField(upload_to = 'projects/')
     project_link = models.CharField(max_length = 255)
 
+    def __str__(self):
+        return self.project_title
+
+    def create_project(self):
+        self.save()
+
+    @classmethod
+    def get_all_projects(cls):
+        return cls.objects.all()
+
+    @classmethod
+    def get_project_by_id(cls, id):
+        return cls.objects.get(pk = id)
+
+    def delete_projects(self):
+        self.delete()
+
+
 class Rating(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='ratings')
     comment = models.TextField()
