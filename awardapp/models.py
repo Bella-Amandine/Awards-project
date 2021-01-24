@@ -53,3 +53,13 @@ class Rating(models.Model):
     design_rate = models.IntegerField(default= 0)
     usability_rate = models.IntegerField(default= 0)
     content_rate = models.IntegerField(default= 0)
+
+    def __str__(self):
+        return f'{self.project.project_title} Ratings'
+
+    def save_rating(self):
+        self.save()
+
+    @classmethod
+    def get_ratings_by_project(cls, project_id):
+        return cls.objects.filter(project = project_id)
