@@ -19,6 +19,6 @@ def signup(request):
         form = SignupForm()
         return render(request, 'registration/signup.html', {"form":form})
 
-@login_required
+@login_required(login_url='login')
 def index(request):
-    return HttpResponse('Welcome')
+    return render(request, 'award/index.html')
