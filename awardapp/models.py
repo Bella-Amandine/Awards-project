@@ -7,7 +7,7 @@ class Profile(models.Model):
     contact = models.CharField(max_length = 255)
 
 class Project(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='projects')
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='projects', default = 0)
     project_title = models.CharField(max_length = 255)
     project_description = models.TextField()
     project_image = models.ImageField(upload_to = 'projects/')
