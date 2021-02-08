@@ -45,6 +45,11 @@ class Project(models.Model):
     def delete_projects(self):
         self.delete()
 
+    @classmethod
+    def search_project(cls, project_title):
+        project_found = cls.objects.filter(project_title__icontains = project_title)
+        return project_found
+
 
 class Rating(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='ratings')

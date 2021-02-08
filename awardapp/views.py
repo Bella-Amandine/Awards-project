@@ -63,6 +63,7 @@ def get_single_project(request, project_id):
    
     return render(request, 'award/single-project.html', {'project': project, 'ratings': ratings})
 
+@login_required(login_url='login')
 def rate_project(request, project_id):
     if request.method =='POST':
         form = RatingForm(request.POST)
@@ -81,3 +82,6 @@ def rate_project(request, project_id):
     else:
         form = RatingForm()
         return render(request, 'award/rate-form.html', {'form': form})
+
+
+
