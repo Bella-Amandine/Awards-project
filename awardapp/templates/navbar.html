@@ -8,7 +8,7 @@
 <body>
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
         <div class="container">
-            <a href="#" class="navbar-brand text-center">Awards</a>
+            <a href="{% url 'index' %}" class="navbar-brand text-center">Awards</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -21,12 +21,22 @@
                 </form>
 
                 <ul class="navbar-nav ml-auto">
+
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="#" class="nav-link">LOGIN</a>
+                        <a href="#" class="nav-link">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">REGISTER</a>
+                        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link">LOGIN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'signup' %}" class="nav-link">REGISTER</a>
+                    </li>
+                    {% endif %}
                     <li class="nav-item mr-auto">
                         <a href="{% url 'post' %}" class="btn btn-success">SUBMIT YOUR SITE</a>
                     </li>

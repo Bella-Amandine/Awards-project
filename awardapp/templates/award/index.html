@@ -1,5 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Welcome</h1>
+    <div class="project-home" style="background: url('{{ my_project.project_image.url}}'); background-position: center; background-size: cover; background-repeat: no-repeat ;height: 70vh;">
+        <div class="dark-overlay d-flex flex-column justify-content-center align-items-center" style="position: absolute; top: 55px; left: 0px; background: rgba(0, 0, 0, 0.8); height: 70vh; width: 100%;">
+            <h2 class="text-white" style="font-size: 55px; font-family: 'Courier New', Courier, monospace; font-weight: bold;">{{my_project.project_title}}</h2>
+            <p class="lead text-white" style="font-size: 30px;">{{my_project.project_description}}</p>
+            <div class="d-flex justify-content-center">
+                <a href="{{my_project.project_link}}" target="__blank" class="btn btn-info mx-2">Visit site</a>
+                <a href="{% url 'rate' my_project.id %} " class="btn btn-success mx-2">Rate Project</a>
+                <a href="{% url 'project' my_project.id %}" class="btn btn-light mx-2">View Rate</a>
+            </div>
+        </div>  
+    </div>
+
+    <div class="all-projects mt-5">
+        <div class="container">
+            <div class="row">
+                {% for project in projects %}
+                <div class="col-md-4">
+                    <a href="{% url 'project' project.id %}" style="text-decoration: none; color: rgb(41, 58, 59);">
+                        <div class="card">
+                            <img src="{{project.project_image.url}}" alt="{{project.project_title}} image" class="img-fluid card-img-top">
+
+                            <div class="card-body">
+                                <h2>{{project.project_title}}</h2>
+                                <p class="lead">{{project.project_description}}</p>
+                                <small class="text-muted">By {{project.owner.user.username}}</small>
+                            </div>
+
+                            <div class="card-footer">
+                                <a href="{{project.project_link}}" target="__blank" class="btn btn-info">Visit Site</a>
+                                <a href="{% url 'project' project.id %}" target="__blank" class="btn btn-success float-right">View Rate</a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <div class="alert alert-warning">Ouupts!!! No project have been posted yet</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

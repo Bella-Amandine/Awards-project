@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import SignupForm, ProjectForm
+from .forms import SignupForm, ProjectForm, RatingForm
 from .models import Profile, Project, Rating
 import random
 
@@ -25,20 +25,20 @@ def signup(request):
         form = SignupForm()
         return render(request, 'registration/signup.html', {"form":form})
 
-@login_required(login_url='login')
+
 def index(request):
-    print(request.user.profile.id)
 
     default_projects = Project.objects.filter(owner = request.user.profile.id).all()
-    
+    all_project = Project.get_all_projects()
 
-    if len(default_projects) == 0:
-        print('you have not yet posted a projects')
+    if default_projects:
+        random_project = random.choice(default_projects)  
     else:
-        print('you have already posted')
+        random_project = random.choice(all_project)
 
-    return render(request, 'award/index.html')
+    return render(request, 'award/index.html', {'my_project': random_project, 'projects': all_project})
 
+@login_required(login_url='login')
 def postProject(request):
 
     if request.method == 'POST':
@@ -56,3 +56,28 @@ def postProject(request):
     else:
         form = ProjectForm()
         return render(request, 'award/post-project.html', {"form": form})
+
+def get_single_project(request, project_id):
+    project = Project.get_project_by_id(project_id)
+    ratings = Rating.get_ratings_by_project(project_id)
+   
+    return render(request, 'award/single-project.html', {'project': project, 'ratings': ratings})
+
+def rate_project(request, project_id):
+    if request.method =='POST':
+        form = RatingForm(request.POST)
+        if form.is_valid():
+
+            new_rate = form.save(commit=False)
+            user = request.user.profile
+            project = Project.get_project_by_id(project_id)
+
+            new_rate.user = user
+            new_rate.project = project
+            new_rate.save()
+
+            # go to single project
+            return redirect('index')
+    else:
+        form = RatingForm()
+        return render(request, 'award/rate-form.html', {'form': form})

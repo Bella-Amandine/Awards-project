@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="project-home" style="background: url('{{ project.project_image.url}}'); background-position: center; background-size: cover; background-repeat: no-repeat ;height: 70vh;">
+    <div class="dark-overlay d-flex flex-column justify-content-center align-items-center" style="position: absolute; top: 55px; left: 0px; background: rgba(0, 0, 0, 0.8); height: 70vh; width: 100%;">
+        <h2 class="text-white" style="font-size: 55px; font-family: 'Courier New', Courier, monospace; font-weight: bold;">{{project.project_title}} By {{project.owner.user.username}}</h2>
+        <p class="lead text-white" style="font-size: 30px;">{{project.project_description}}</p>
+        <div class="d-flex justify-content-center">
+            <a href="{{project.project_link}}" target="__blank" class="btn btn-info mx-2">Visit site</a>
+            <a href="{% url 'rate' project.id %} " class="btn btn-success mx-2">Rate Project</a>
+        </div>
+    </div>  
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Ratings</h3>
+                </div>
+                <ul class="list-group flush">
+                    {% for rating in ratings %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="user-comment">
+                            <h5 class="text-muted">{{rating.user.user.username}}</h5>
+                            <p class="lead"> {{rating.comment}} </p>
+                        </div>
+
+                        <div class="d-flex justify-content-around w-25">
+                            <div class="design">
+                                <p class="border rounded-circle px-3 py-auto">
+                                    {{ rating.design_rate }}
+                                </p>
+                                <small class="text-muted">Design</small>
+                            </div>
+
+                            <div class="usability">
+                                <p class="border rounded-circle px-3 py-auto">
+                                    {{ rating.usability_rate }}
+                                </p>
+                                <small class="text-muted">Usability</small>
+                            </div>
+
+                            <div class="content">
+                                <p class="border rounded-circle px-3 py-auto">
+                                    {{ rating.content_rate }}
+                                </p>
+                                <small class="text-muted">Content</small>
+                            </div>
+
+                        </div>
+                    </li>
+                    {% empty  %}
+                    <div class="alert alert-info">
+                        p.No ratings yet
+                    </div>
+                    {% endfor %}
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
